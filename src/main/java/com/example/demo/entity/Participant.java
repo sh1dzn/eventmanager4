@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Participant")
@@ -8,10 +9,9 @@ public class Participant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "participant_id") // Соответствие с таблицей: participant_id
+    @Column(name = "participant_id")
     private Integer id;
 
-    // Связь с Event: столбец event_id в таблице Participant
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
@@ -60,5 +60,21 @@ public class Participant {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Participant that = (Participant) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(email, that.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email);
     }
 }
